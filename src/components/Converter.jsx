@@ -1,17 +1,37 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react';
-import Header from './Header';
 
-export default function Converter() {
-  const [currencyList, setCurrencyList] = useState({})
-  const [exchangeRates,setExchangeRates] = useState ({})
-  const [upperCurrency, setUpperCurrency] = useState('EUR')
-  const [lowerCurrency, setLowerCurrency] = useState('USD')
-  const [upperCurrencyValue, setUpperCurrencyValue] = useState(null)
-  const [lowerCurrencyValue, setLowerCurrencyValue] = useState(null)
 
-  const [RegexErrorUpper,setRegexErrorUpper] = useState(false)
-  const [RegexErrorLower,setRegexErrorLower] = useState(false)
+function InputField({currencyValue,setCurrencyValue}){
+  return(
+    <input
+      value={currencyValue? Intl.NumberFormat('de-DE',{style:'decimal'}).format(currencyValue):null}
+      // value={currencyValue? currencyValue : null}
+      onChange={async (e)=>{
+        e.preventDefault()
+        setCurrencyValue(e.target.value)
+      }}    
+  />
+  )
+}
+
+export default function Converter(prop) {
+
+  const {
+    currencyList, 
+    setCurrencyList,
+    exchangeRates,
+    setExchangeRates,
+    upperCurrency, 
+    setUpperCurrency,
+    lowerCurrency, 
+    setLowerCurrency,
+    upperCurrencyValue, 
+    setUpperCurrencyValue,
+    lowerCurrencyValue, 
+    setLowerCurrencyValue
+  } = prop
+  const [regexError, setRegexError] = useState(false)
  
   function sortObject(object){
     let array = Object.entries(object)
@@ -59,13 +79,14 @@ export default function Converter() {
     )
   }
 
-  // function checkNumber(val){
-  //   const reg = new RegExp(/^[0-9,]*$/)
-  //   return reg.test(val)
-  // }
+  function checkNumber(val){
+    const reg = new RegExp(/^[0-9,.]*$/)
+    if(!val) {return false}
+    return reg.test(val)
+  }
 
   async function convertCurrency(from, valueFrom, to, setValueTo){
-    // await setRegexErrorUpper(!checkNumber(upperCurrencyValue))
+    // await setRegexError(!checkNumber(valueFrom))
     // await setRegexErrorLower(!checkNumber(lowerCurrencyValue))
     // const formatNumber= (number)=>{
     //   return Intl.NumberFormat('de-DE',{style:'decimal'}).format(number)
@@ -91,55 +112,34 @@ export default function Converter() {
 
   },[])
 
+  return(
+    <>
+      <div>
+        <InputField
+          currencyValue={upperCurrencyValue}
+          setCurrencyValue={setUpperCurrencyValue}
+        />
+        <DisplayCurrencyList
+          initialCurrency='EUR'
+          currentCurrency={upperCurrency}
+          setCurrency={setUpperCurrency}
+        />
+      </div>
+      <br/>
+      <div>
+        <InputField
+          currencyValue={lowerCurrencyValue}
+          setCurrencyValue={setLowerCurrencyValue}
+        />
+        <DisplayCurrencyList
+          initialCurrency='USD'
+          currentCurrency={lowerCurrency}
+          setCurrency={setLowerCurrency}
+        />
+        {regexError? <span>Please Input in a correct format</span>:null}
+      </div>
+    </>
+  )
+  
 
-  function InputField(){
-    return(
-      <>
-        <div>
-          <input
-            value={Intl.NumberFormat('de-DE',{style:'decimal'}).format(upperCurrencyValue)}
-            onChange={async (e)=>{
-              setUpperCurrencyValue(e.target.value)
-            }}    
-          />
-          <DisplayCurrencyList
-            initialCurrency='EUR'
-            currentCurrency={upperCurrency}
-            setCurrency={setUpperCurrency}
-          />
-          {RegexErrorUpper? <span>Please Input in a correct format</span>:null}
-        </div>
-        <div>
-          <span>{lowerCurrency} : {lowerCurrencyValue}</span>
-          <br/>
-          <input
-            value={Intl.NumberFormat('de-DE',{style:'decimal'}).format(lowerCurrencyValue)}
-            onChange={(e)=>{
-              setLowerCurrencyValue(e.target.value)
-            }}    
-          />
-          <DisplayCurrencyList
-            initialCurrency='USD'
-            currentCurrency={lowerCurrency}
-            setCurrency={setLowerCurrency}
-          />
-          {RegexErrorLower? <span>Please Input in a correct format</span>:null}
-        </div>
-      </>
-    )
-  }
-
-  return (
-    <div
-      data-testid="Converter"
-    >
-      <Header
-        upperCurrency={upperCurrency}
-        upperCurrencyValue={upperCurrencyValue}
-        lowerCurrency={lowerCurrency}
-        lowerCurrencyValue={lowerCurrencyValue}
-      />
-      <InputField/>
-    </div>
-  );
 }
