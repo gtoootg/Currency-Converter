@@ -66,12 +66,14 @@ export default function Converter(prop) {
           e.preventDefault()
           setCurrency(e.target.value)}}
         value={currentCurrency}
+        data-testid="select"
       >
         <option value={initialCurrency} selected>{currencyList[initialCurrency]}</option>
         {Object.keys(currencyList).map((list,i)=>
             <option 
               key={i}
               value={list}
+              data-testid={list}
             >
               {currencyList[list]}
             </option>

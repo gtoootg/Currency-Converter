@@ -1,6 +1,8 @@
 /**
  * @jest-environment jsdom
  */
+
+/* eslint-disable testing-library/no-unnecessary-act */
 import { render, fireEvent, screen } from "@testing-library/react";
 import Converter from "./Converter";
 import React from 'react'
@@ -24,8 +26,6 @@ describe('Converter',()=>{
     }
   }
 
-
-
   it('should render correctly', ()=>{
     const {container} =  render(
       <Converter
@@ -46,8 +46,8 @@ describe('Converter',()=>{
     expect(container.childElementCount).toBe(3)
   })
 
-  it('should call setCurrencyValue',async()=>{
-
+  it('should call setCurrencyValue, should call display selected Currency',async()=>{
+    const setLowerCurrency=jest.fn()
     const setLowerCurrencyValue=jest.fn()
     render(
       <Converter
@@ -58,17 +58,24 @@ describe('Converter',()=>{
       upperCurrency={"EUR"} 
       setUpperCurrency={jest.fn()}
       lowerCurrency={"USD"} 
-      setLowerCurrency={jest.fn()}
+      setLowerCurrency={setLowerCurrency}
       upperCurrencyValue={1} 
       setUpperCurrencyValue={jest.fn()}
       lowerCurrencyValue={1.07} 
       setLowerCurrencyValue={setLowerCurrencyValue}
       />)
-      // eslint-disable-next-line testing-library/no-unnecessary-act
+
       await  act(()=>{
         fireEvent.input(screen.getAllByTestId('input')[0],{target:{value:"100"}})
       })
-
       expect(setLowerCurrencyValue).toHaveBeenCalled()
+
+      await act(()=>{
+        fireEvent.click(screen.getAllByTestId('select')[0],{target:{value:"USD"}})
+      })
+      let USD = screen.getAllByTestId('USD')
+      let EUR = screen.getAllByTestId('EUR')
+      expect(USD[0].selected).toBeTruthy()
+      expect(EUR[0].selected).toBeFalsy()
   })
 })
