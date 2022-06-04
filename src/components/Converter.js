@@ -67,11 +67,15 @@ export default function Converter() {
   async function convertCurrency(from, valueFrom, to, setValueTo){
     // await setRegexErrorUpper(!checkNumber(upperCurrencyValue))
     // await setRegexErrorLower(!checkNumber(lowerCurrencyValue))
-    
+    // const formatNumber= (number)=>{
+    //   return Intl.NumberFormat('de-DE',{style:'decimal'}).format(number)
+    // }
+ 
     const rateFrom = exchangeRates[from]
     const rateTo = exchangeRates[to]
 
     setValueTo(valueFrom * rateFrom / rateTo)
+    // setValueTo(formatNumber(valueFrom)*formatNumber(rateFrom)/formatNumber(rateTo))
   }
 
   useEffect(()=>{
@@ -84,6 +88,7 @@ export default function Converter() {
 
   useEffect(()=>{
     fetchCurrencyList()
+
   },[])
 
 
@@ -92,9 +97,8 @@ export default function Converter() {
       <>
         <div>
           <input
-            value={upperCurrencyValue}
+            value={Intl.NumberFormat('de-DE',{style:'decimal'}).format(upperCurrencyValue)}
             onChange={async (e)=>{
-              e.preventDefault()
               setUpperCurrencyValue(e.target.value)
             }}    
           />
@@ -109,9 +113,8 @@ export default function Converter() {
           <span>{lowerCurrency} : {lowerCurrencyValue}</span>
           <br/>
           <input
-            value={lowerCurrencyValue}
+            value={Intl.NumberFormat('de-DE',{style:'decimal'}).format(lowerCurrencyValue)}
             onChange={(e)=>{
-              e.preventDefault()
               setLowerCurrencyValue(e.target.value)
             }}    
           />
