@@ -1,10 +1,11 @@
 import axios from 'axios'
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 
 
 function InputField({currencyValue,setCurrencyValue}){
   return(
     <input
+      data-testid="input"
       value={currencyValue? Intl.NumberFormat('de-DE',{style:'decimal'}).format(currencyValue):null}
       // value={currencyValue? currencyValue : null}
       onChange={async (e)=>{
@@ -109,7 +110,6 @@ export default function Converter(prop) {
 
   useEffect(()=>{
     fetchCurrencyList()
-
   },[])
 
   return(

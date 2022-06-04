@@ -1,4 +1,4 @@
-import react, {useState} from 'react'
+import React, {useState} from 'react'
 import Converter from "./components/Converter";
 import Header from './components/Header';
 
