@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Converter should render correctly 1`] = `
+<div>
+  <div
+    data-testid="Converter"
+  >
+    <div>
+      <h1>
+        EUR
+         : 
+      </h1>
+      <h1
+        style="color: blue;"
+      >
+        USD
+         : 
+      </h1>
+    </div>
+    <div>
+      <input
+        value="NaN"
+      />
+      <select>
+        <option
+          value="EUR"
+        />
+      </select>
+    </div>
+    <div>
+      <span>
+        USD
+         : 
+        NaN
+      </span>
+      <br />
+      <input
+        value="NaN"
+      />
+      <select>
+        <option
+          value="USD"
+        />
+      </select>
+    </div>
+  </div>
+</div>
+`;
