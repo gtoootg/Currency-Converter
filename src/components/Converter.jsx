@@ -7,8 +7,8 @@ export default function Converter() {
   const [exchangeRates,setExchangeRates] = useState ({})
   const [upperCurrency, setUpperCurrency] = useState('EUR')
   const [lowerCurrency, setLowerCurrency] = useState('USD')
-  const [upperCurrencyValue, setUpperCurrencyValue] = useState(1)
-  const [lowerCurrencyValue, setLowerCurrencyValue] = useState()
+  const [upperCurrencyValue, setUpperCurrencyValue] = useState(null)
+  const [lowerCurrencyValue, setLowerCurrencyValue] = useState(null)
 
   const [RegexErrorUpper,setRegexErrorUpper] = useState(false)
   const [RegexErrorLower,setRegexErrorLower] = useState(false)
@@ -130,7 +130,9 @@ export default function Converter() {
   }
 
   return (
-    <>
+    <div
+      data-testid="Converter"
+    >
       <Header
         upperCurrency={upperCurrency}
         upperCurrencyValue={upperCurrencyValue}
@@ -138,6 +140,6 @@ export default function Converter() {
         lowerCurrencyValue={lowerCurrencyValue}
       />
       <InputField/>
-    </>
+    </div>
   );
 }
